@@ -1,0 +1,7 @@
+language: java
+
+addons:
+  sonarcloud:
+    organization: "raduq-github"
+script:
+  sonar-scanner
