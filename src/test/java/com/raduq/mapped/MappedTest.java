@@ -10,59 +10,64 @@ import org.junit.Test;
 
 public class MappedTest {
 
+	private static final String ERROR_VALUE = "broken";
+	private static final String STRING_VALUE = "1";
+	private static final int INT_VALUE_1 = 1;
+	private static final int INT_VALUE_2 = 2;
+
 	@Test
 	public void canMapToOptional() {
-		String mapped = new Mapped<>( 1 )
+		String mapped = new Mapped<>( INT_VALUE_1 )
 				.toOptional( integer -> Optional.of( String.valueOf( integer ) ) )
-				.orElse( "broken" );
-		assertThat( mapped, equalTo( "1" ) );
+				.orElse( ERROR_VALUE );
+		assertThat( mapped, equalTo( STRING_VALUE ) );
 	}
 
 	@Test
 	public void canMapToOptionalWithCondition() {
-		String mapped = new Mapped<>( 1 )
-				.when( integer -> integer == 1 )
+		String mapped = new Mapped<>( INT_VALUE_1 )
+				.when( integer -> integer == INT_VALUE_1 )
 				.toOptional( integer -> Optional.of( String.valueOf( integer ) ) )
-				.orElse( "broken" );
-		assertThat( mapped, equalTo( "1" ) );
+				.orElse( ERROR_VALUE );
+		assertThat( mapped, equalTo( STRING_VALUE ) );
 	}
 
 	@Test
 	public void cantMapToOptionalWhenConditionFails() {
-		String mapped = new Mapped<>( 1 )
-				.when( integer -> integer == 2 )
+		String mapped = new Mapped<>( INT_VALUE_1 )
+				.when( integer -> integer == INT_VALUE_2 )
 				.toOptional( integer -> Optional.of( String.valueOf( integer ) ) )
-				.orElse( "broken" );
-		assertThat( mapped, equalTo( "broken" ) );
+				.orElse( ERROR_VALUE );
+		assertThat( mapped, equalTo( ERROR_VALUE ) );
 	}
 
 	@Test
 	public void cantMapToOptionalWhenNull() {
 		String mapped = new Mapped<>( null )
 				.toOptional( integer -> Optional.of( String.valueOf( integer ) ) )
-				.orElse( "broken" );
-		assertThat( mapped, equalTo( "broken" ) );
+				.orElse( ERROR_VALUE );
+		assertThat( mapped, equalTo( ERROR_VALUE ) );
 	}
 
 	@Test
 	public void canMap() {
-		String mapped = new Mapped<>( 1 )
+		String mapped = new Mapped<>( INT_VALUE_1 )
 				.to( integer -> Optional.of( String.valueOf( integer ) ) );
-		assertThat( mapped, equalTo( "1" ) );
+		assertThat( mapped, equalTo( STRING_VALUE ) );
 	}
 
 	@Test
 	public void canMapWithCondition() {
-		String mapped = new Mapped<>( 1 )
-				.when( integer -> integer == 1 )
+		String mapped = new Mapped<>( INT_VALUE_1 )
+				.when( integer -> integer == INT_VALUE_1 )
 				.to( integer -> Optional.of( String.valueOf( integer ) ) );
-		assertThat( mapped, equalTo( "1" ) );
+		assertThat( mapped, equalTo( STRING_VALUE ) );
 	}
 
 	@Test
 	public void cantMapWhenConditionFails() {
-		String mapped = new Mapped<>( 1 )
-				.when( integer -> integer == 2 )
+		String mapped = new Mapped<>( INT_VALUE_1 )
+				.when( integer -> integer == INT_VALUE_2 )
 				.to( integer -> Optional.of( String.valueOf( integer ) ) );
 		assertThat( mapped, nullValue() );
 	}

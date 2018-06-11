@@ -12,11 +12,15 @@ import org.junit.Test;
 
 public class MappedListTest {
 
+	private static final String STRING_VALUE_1 = "1";
+	private static final String STRING_VALUE_2 = "2";
+	private static final String STRING_VALUE_3 = "3";
+
 	@Test
 	public void canMap() {
 		List<String> mapped = new MappedList<>( Arrays.asList( 1, 2, 3 ) )
 				.to( integer -> Optional.of( String.valueOf( integer ) ) );
-		assertThat( mapped, equalTo( Arrays.asList( "1", "2", "3" ) ) );
+		assertThat( mapped, equalTo( Arrays.asList( STRING_VALUE_1, STRING_VALUE_2, STRING_VALUE_3 ) ) );
 	}
 
 	@Test
@@ -24,7 +28,7 @@ public class MappedListTest {
 		List<String> mapped = new MappedList<>( Arrays.asList( 1, 1, 1 ) )
 				.whenAll( integer -> integer == 1 )
 				.to( integer -> Optional.of( String.valueOf( integer ) ) );
-		assertThat( mapped, equalTo( Arrays.asList( "1", "1", "1" ) ) );
+		assertThat( mapped, equalTo( Arrays.asList( STRING_VALUE_1, STRING_VALUE_1, STRING_VALUE_1 ) ) );
 	}
 
 	@Test
